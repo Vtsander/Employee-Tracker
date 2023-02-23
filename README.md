@@ -5,10 +5,11 @@
 ## License 
  - MIT License
 ## Tech Used
- - 
- - 
- - 
- - 
+ - Javascript
+ - Inquirer
+ - Node.js
+ - MySQL
+ - MySQL2 Node Package
 ## Usage
  - 
 ## Installation
