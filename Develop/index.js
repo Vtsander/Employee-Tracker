@@ -1,14 +1,13 @@
 const iq = require('inquirer')
 const mysql = require('mysql2');
 const { exit } = require('process');
-const pass = require('../../pass/pass')
 const cTable = require('console.table')
 
 const db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: pass,
+        password: 'pass',
         database: 'employees_db'
     },
     console.log('Connected to the employees_db database')
