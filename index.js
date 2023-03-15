@@ -38,7 +38,7 @@ const initPrompt = {
   const departQuery = async () => {
     try {
       const res = await iq.prompt(departPrompt);
-      await db.query(`INSERT INTO department (name) VALUES ("${res.depName}")`);
+      db.query(`INSERT INTO department (name) VALUES ("${res.depName}")`);
       init();
     } catch (error) {
       console.error(error);
@@ -68,7 +68,7 @@ const initPrompt = {
       
       const selectedDepartment = data.find(department => department.name === userInput.depRole);
       
-      await db.query(
+      db.query(
         `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`,
         [userInput.roleName, userInput.salary, selectedDepartment.id]
       );
@@ -112,7 +112,7 @@ const initPrompt = {
       
       const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${employeeInfo.firstName}", "${employeeInfo.lastName}", ${selectedRole.id}, ${selectedManager.id})`;
       
-      await db.query(query);
+      db.query(query);
       
       init();
     } catch (error) {
@@ -151,7 +151,7 @@ const initPrompt = {
         employQuery();
     }
     if (res.initAction === 'Exit Application'){
-        return exit()
+        process.exit(0);
     }
     return
 }
