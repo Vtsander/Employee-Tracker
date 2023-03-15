@@ -19,6 +19,61 @@ const initPrompt = {
     ]
   };
   
-
+  const departmentPrompt = {
+    type: "input",
+    name: "depName",
+    message: "What is the name of the department?",
+  };
   
+  const deptQuery = async () => {
+    try {
+      const res = await iq.prompt(departmentPrompt);
+      await db.query(`INSERT INTO department (name) VALUES ("${res.depName}")`);
+      init();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const roleQuery = async(data) => {
+    try {
+      const userInput = await iq.prompt([
+        { type: "input", name: "roleName", message: "What is the name of the role?" },
+        { type: "number", name: "salary", message: "What is the salary for this role?" },
+        { type: "list", name: "depRole", choices: data }
+      ]);
+      
+      const selectedDepartment = data.find(element => element.name === userInput.depRole);
+      
+      const query = `INSERT INTO role (title, salary, department_id) VALUES ("${userInput.roleName}", "${userInput.salary}", ${selectedDepartment.id})`;
+      await db.query(query);
+      
+      init();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  const init = async() => {
+    const res = await iq.prompt(initPrompt)
+    if (res.initAction === 'View all departments'){
+        db.query('SELECT * FROM department', function (err, results){
+            console.table(results)
+            init();
+        })
+    }  
+    if (res.initAction === 'Add a department'){
+        deptQuery();
+    }
+    if (res.initAction === 'View all roles'){
+        db.query('SELECT * FROM role', function (err, results){
+            console.table(results)
+            init();
+        })
+    }
+    if (res.initAction === 'Add a role'){
+        roleQuery();
+    }
+    return
+}
 init();
