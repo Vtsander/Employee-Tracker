@@ -3,6 +3,16 @@ const mysql = require('mysql2');
 const { exit } = require('process');
 const cTable = require('console.table')
 
+const db = mysql.createConnection(
+    {
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'employees_db'
+    },
+    console.log('Connecting to employees_db database')
+);
+
 const initPrompt = {
     type: "list",
     name: "initAction",
@@ -139,6 +149,9 @@ const initPrompt = {
     }
     if (res.initAction === 'Add an employee'){
         employQuery();
+    }
+    if (res.initAction === 'Exit Application'){
+        return exit()
     }
     return
 }
