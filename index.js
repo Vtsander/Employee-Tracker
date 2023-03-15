@@ -19,15 +19,15 @@ const initPrompt = {
     ]
   };
   
-  const departmentPrompt = {
+  const departPrompt = {
     type: "input",
     name: "depName",
     message: "What is the name of the department?",
   };
   
-  const deptQuery = async () => {
+  const departQuery = async () => {
     try {
-      const res = await iq.prompt(departmentPrompt);
+      const res = await iq.prompt(departPrompt);
       await db.query(`INSERT INTO department (name) VALUES ("${res.depName}")`);
       init();
     } catch (error) {
@@ -69,6 +69,47 @@ const initPrompt = {
     }
   }
   
+  const employQuery = async (employeeList, roleList) => {
+    try {
+      const employeeInfo = await iq.prompt([
+        {
+          type: "input",
+          name: "firstName",
+          message: "What is the employee's first name?",
+        },
+        {
+          type: "input",
+          name: "lastName",
+          message: "What is the employee's last name?",
+        },
+        {
+          type: "list",
+          name: "roleId",
+          message: "What is the employee's role?",
+          choices: roleList.map(role => role.name),
+        },
+        {
+          type: "list",
+          name: "managerId",
+          message: "Who is the employee's manager?",
+          choices: employeeList.map(manager => manager.name),
+        },
+      ]);
+      
+      const selectedManager = employeeList.find(manager => manager.name === employeeInfo.managerId);
+      
+      const selectedRole = roleList.find(role => role.name === employeeInfo.roleId);
+      
+      const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${employeeInfo.firstName}", "${employeeInfo.lastName}", ${selectedRole.id}, ${selectedManager.id})`;
+      
+      await db.query(query);
+      
+      init();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   
   const init = async() => {
     const res = await iq.prompt(initPrompt)
@@ -79,7 +120,7 @@ const initPrompt = {
         })
     }  
     if (res.initAction === 'Add a department'){
-        deptQuery();
+        departQuery();
     }
     if (res.initAction === 'View all roles'){
         db.query('SELECT * FROM role', function (err, results){
@@ -89,6 +130,15 @@ const initPrompt = {
     }
     if (res.initAction === 'Add a role'){
         roleQuery();
+    }
+    if (res.initAction === 'View all employees'){
+        db.query('SELECT * FROM employee', function (err, results){
+            console.table(results)
+            init();
+        })
+    }
+    if (res.initAction === 'Add an employee'){
+        employQuery();
     }
     return
 }
