@@ -35,24 +35,40 @@ const initPrompt = {
     }
   };
 
-  const roleQuery = async(data) => {
+  const roleQuery = async (data) => {
     try {
       const userInput = await iq.prompt([
-        { type: "input", name: "roleName", message: "What is the name of the role?" },
-        { type: "number", name: "salary", message: "What is the salary for this role?" },
-        { type: "list", name: "depRole", choices: data }
+        { 
+          type: "input", 
+          name: "roleName", 
+          message: "What is the name of the role?" 
+        },
+        { 
+          type: "number", 
+          name: "salary", 
+          message: "What is the salary for this role?" 
+        },
+        { 
+          type: "list", 
+          name: "depRole", 
+          message: "What department does this role belong to?",
+          choices: data
+        }
       ]);
       
-      const selectedDepartment = data.find(element => element.name === userInput.depRole);
+      const selectedDepartment = data.find(department => department.name === userInput.depRole);
       
-      const query = `INSERT INTO role (title, salary, department_id) VALUES ("${userInput.roleName}", "${userInput.salary}", ${selectedDepartment.id})`;
-      await db.query(query);
-      
+      await db.query(
+        `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`,
+        [userInput.roleName, userInput.salary, selectedDepartment.id]
+      );
+  
       init();
     } catch (error) {
       console.error(error);
     }
   }
+  
   
   const init = async() => {
     const res = await iq.prompt(initPrompt)
