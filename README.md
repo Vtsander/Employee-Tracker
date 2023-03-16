@@ -13,18 +13,22 @@
 ## Usage
  - This application is designed to keep track of employees, their positions and salaries. It provides an easy and efficient way for businesses to manage their workforce by organizing and storing employee information in one place. This information can be quickly accessed and updated, ensuring that the company has an up-to-date record of their employees and their roles.
 ## Installation
- - 
- - 
- - 
- - 
- - 
+ - Open terminal
+ - Type npm install into terminal
+ - Type node index.js
+ - Select item from list
+ - Select exit when ready to close application
 ## Contributors
  - Veroneca Sander
 ## Challenges
- - 
- - 
+ - Getting the separate queries to work similarly yet with a small difference was very difficult
+ - Had alot of errors in the adjusting of the queries
 ## Contact Info
  - Github - @Vtsander
  - Email - nguyenveroneca@yahoo.com
 ## Photos of Project
- - 
+ - <img src="./assets/EmpTra1.PNG">
+ - <img src="./assets/EmpTra2.PNG">
+ - <img src="./assets/EmpTra3.PNG">
+ - <img src="./assets/EmpTra4.PNG">
+ - <img src="./assets/EmpTra5.PNG">

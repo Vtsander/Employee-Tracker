@@ -38,12 +38,20 @@ const initPrompt = {
   const departQuery = async () => {
     try {
       const res = await iq.prompt(departPrompt);
-      db.query(`INSERT INTO department (name) VALUES ("${res.depName}")`);
-      init();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      db.query(`INSERT INTO department (name) VALUES ("${res.depName}")`,
+      function (err, res) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Department added successfully!');
+          init();
+        }
+      }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const roleQuery = async (data) => {
     try {
