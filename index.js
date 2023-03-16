@@ -136,40 +136,50 @@ const initPrompt = {
     }
   };
   
- const updateQuery = async () => {
-  try {
-    const userUpdate = await iq.prompt([
-      { 
-        type: "list", 
-        name: "updateEmploy", 
-        message: "Which employee would you like to have updated?",
-        choices: employeeList.map(employee => employee.first_name + employee.last_name),
-      },
-      { 
-        type: "list", 
-        name: "UpdateRole", 
-        message: "What is the new role of this employee?",
-        choices:""
-      }
-    ]);
-
-      const selectedUpdateEmp = employeeList.find(employee => employee.first_name + employee.last_name === userUpdate.updateEmploy);
+  const updateQuery = async (employees, roles) => {
+    try {
+      const userUpdate = await iq.prompt([
+        {
+          type: "list",
+          name: "updateEmploy",
+          message: "Which employee would you like to have updated?",
+          choices: employees.map(
+            (employee) => employee.first_name + employee.last_name
+          ),
+        },
+        {
+          type: "list",
+          name: "updateRole",
+          message: "What is the new role of this employee?",
+          choices: roles.map((role) => role.title),
+        },
+      ]);
+  
+      const selectedUpdateEmp = employees.find(
+        (employee) =>
+          employee.first_name + employee.last_name === userUpdate.updateEmploy
+      );
+  
+      const selectedUpdateRole = roles.find(
+        (role) => role.title === userUpdate.updateRole
+      );
   
       db.query(
-        `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${employeeInfo.firstName}", "${employeeInfo.lastName}", ${selectedEmployee.id}, ${selectedUpdateEmp.id})`,
+        `UPDATE employee SET role_id = ${selectedUpdateRole.id} WHERE id = ${selectedUpdateEmp.id}`,
         function (err, res) {
           if (err) {
             console.error(err);
           } else {
-            console.log('Employee updated successfully!');
+            console.log("Employee updated successfully!");
             init();
-          }       
+          }
         }
       );
-      } catch (error) {
-  console.error(error);
-  }
- };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
  
   const init = async() => {
     const res = await iq.prompt(initPrompt)
