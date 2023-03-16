@@ -27,8 +27,10 @@
  - Github - @Vtsander
  - Email - nguyenveroneca@yahoo.com
 ## Photos of Project
- - <img src="./Assets/EmpTra1.PNG">
- - <img src="./Assets/EmpTra2.PNG">
- - <img src="./Assets/EmpTra3.PNG">
- - <img src="./Assets/EmpTra4.PNG">
- - <img src="./Assets/EmpTra5.PNG">
+ - <img src="./Assets/EmpTra1.png">
+ - <img src="./Assets/EmpTra2.png">
+ - <img src="./Assets/EmpTra3.png">
+ - <img src="./Assets/EmpTra4.png">
+ - <img src="./Assets/EmpTra5.png">
+ 
+ 
